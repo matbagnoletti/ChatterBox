@@ -1,0 +1,11 @@
+@font-face {
+    font-family: 'Inter';
+    src: url('Inter-VariableFont_slnt,wght.ttf');
+}
+
+.root {
+    -fx-font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
+    -fx-font-weight: 500 !important;
+    -fx-font-size: 14px;
+    -fx-spacing: 11.0 !important;
+}

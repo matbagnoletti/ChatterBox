@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="WarmBoot" type="JetRunConfigurationType" singleton="false">
+    <option name="MAIN_CLASS_NAME" value="edu.avolta.tpsit.chatterbox.ChatterBoxKt" />
+    <module name="ChatterBox" />
+    <shortenClasspath name="NONE" />
+    <method v="2" />
+  </configuration>
+</component>

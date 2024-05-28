@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane cache="true" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.avolta.tpsit.chatterbox.ChatSetupController">
+   <children>
+      <TabPane prefHeight="350.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Impostazioni">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="323.0" prefWidth="500.0">
+                     <children>
+                        <TextField fx:id="username" alignment="CENTER" layoutX="151.0" layoutY="47.0" onKeyReleased="#controllaForm" onKeyTyped="#controllaForm" prefHeight="29.0" prefWidth="198.0" promptText="es. matbagnoletti" AnchorPane.topAnchor="40.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="163.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome utente" textAlignment="CENTER" wrappingWidth="169.47443389892578" AnchorPane.topAnchor="15.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="indirizzoIP" alignment="CENTER" layoutX="151.0" layoutY="115.0" onKeyReleased="#controllaForm" onKeyTyped="#controllaForm" prefHeight="29.0" prefWidth="198.0" promptText="es. 230.19.6.5" AnchorPane.topAnchor="115.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="174.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Indirizzo IP del gruppo" textAlignment="CENTER" AnchorPane.topAnchor="90.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Text>
+                        <TextField fx:id="porta" alignment="CENTER" layoutX="151.0" layoutY="182.0" onKeyReleased="#controllaForm" onKeyTyped="#controllaForm" prefHeight="29.0" prefWidth="198.0" promptText="es. 19065" AnchorPane.topAnchor="190.0">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </TextField>
+                        <Text layoutX="197.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Porta del gruppo" textAlignment="CENTER" AnchorPane.topAnchor="165.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Text>
+                        <Button fx:id="btnStart" disable="true" layoutX="244.0" layoutY="249.0" mnemonicParsing="false" onAction="#avviaChat" prefHeight="30.0" prefWidth="105.0" text="Avvia chat" />
+                        <Button fx:id="btnInfo" layoutX="151.0" layoutY="249.0" mnemonicParsing="false" onAction="#info" prefHeight="30.0" prefWidth="82.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Avanzate">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Slider fx:id="TTL" blockIncrement="1.0" layoutX="80.0" layoutY="56.0" majorTickUnit="127.0" max="255.0" min="1.0" minorTickCount="10" onDragDetected="#aggiornaTTL" onDragDone="#aggiornaTTL" onDragDropped="#aggiornaTTL" onDragEntered="#aggiornaTTL" onDragExited="#aggiornaTTL" onDragOver="#aggiornaTTL" onMouseClicked="#aggiornaTTL" onMouseDragEntered="#aggiornaTTL" onMouseDragExited="#aggiornaTTL" onMouseDragOver="#aggiornaTTL" onMouseDragReleased="#aggiornaTTL" onMouseDragged="#aggiornaTTL" onMouseEntered="#aggiornaTTL" onMouseExited="#aggiornaTTL" onMouseMoved="#aggiornaTTL" onMousePressed="#aggiornaTTL" onMouseReleased="#aggiornaTTL" prefHeight="49.0" prefWidth="340.0" showTickLabels="true" showTickMarks="true" value="128.0" />
+                        <Text layoutX="136.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="TTL (Time To Live)" textAlignment="CENTER" wrappingWidth="193.259765625">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Text>
+                        <CheckBox fx:id="loopbackOff" alignment="CENTER" contentDisplay="CENTER" graphicTextGap="0.0" layoutX="97.0" layoutY="219.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="306.0" text="Disabilita il loopback dei datagrammi" textAlignment="CENTER" AnchorPane.bottomAnchor="66.0" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="97.0" AnchorPane.topAnchor="219.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </CheckBox>
+                        <Text layoutX="88.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&quot;1&quot; indica che i datagrammi possono essere inoltrati una sola volta, &quot;255&quot; indica che i datagrammi possono essere inoltrati fino al massimo numero di volte consentito dalla rete." textAlignment="CENTER" wrappingWidth="325.0390625" />
+                        <Text fx:id="ttlImpostato" layoutX="297.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="128" textAlignment="CENTER" wrappingWidth="32.640625">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Text>
+                        <Separator layoutX="46.0" layoutY="205.0" prefHeight="3.0" prefWidth="409.0" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="205.0" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
