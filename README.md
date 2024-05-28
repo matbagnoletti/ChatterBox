@@ -16,6 +16,8 @@ L'interfaccia grafica utilizzata è stata realizzata con JavaFX, mentre la gesti
 - [JDK](https://www.oracle.com/it/java/technologies/downloads/) (v22.0.1)
 - [JavaFX](https://openjfx.io/) (v22.0.1)
 - [Maven](https://maven.apache.org/download.cgi)
+- [Git](https://git-scm.com/downloads)
+- [Git LFS](https://git-lfs.com/)
 
 È possibile visualizzare le versioni già presenti sul proprio dispositivo mediante i seguenti comandi:
 ```bash
