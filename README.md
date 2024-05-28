@@ -46,13 +46,13 @@ Il progetto si compone da 2 packages principali:
       <img src="screenshot/setup-1.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di configurazione - 1">
    </div> 
    
-   Il nome utente non può essere nullo e non deve contenere spazi. L'indirizzo IP del gruppo deve essere di classe D multicast globale (da da 224.0.1.0 - 238.255.255.255 esclusi) e la porta deve essere compresa tra 1024 e 65535.
+   Il nome utente non può essere nullo. L'indirizzo IP del gruppo deve essere di classe D multicast globale (da 224.0.1.0 - 238.255.255.255 esclusi) e la porta deve essere compresa tra 1024 e 65535.
 
    <div align="center">
         <img src="screenshot/setup-2.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di configurazione - 2">
    </div>
    
-   Il TTL (Time To Live) è un valore che determina il numero di router attraverso i quali il pacchetto può passare. Un valore di 1 indica che il pacchetto non può lasciare la sottorete locale, mentre un valore di 255 indica che il pacchetto può attraversare un numero illimitato di router. Il valore di default è 128. Per quanto riguarda il loopback dei datagrammi, invece, è possibile disattivarlo per alleggerire il traffico di rete nel solo caso in cui multiple istanze dell'applicazione NON siano eseguite sullo stesso dispositivo.
+   Il TTL (Time To Live) è un valore che determina il numero di router attraverso i quali il datagramma può passare. Un valore di 1 indica che il datagramma non può lasciare la sottorete locale, mentre un valore di 255 indica che il datagramma può attraversare un numero illimitato di router. Il valore di default è 128. Per quanto riguarda il loopback dei datagrammi, invece, è possibile disattivarlo per alleggerire il traffico di rete nel solo caso in cui multiple istanze dell'applicazione NON siano eseguite sullo stesso dispositivo.
    
 2. Una volta configurato il profilo, l'utente verrà reindirizzato alla schermata principale dell'applicazione. Qui sarà possibile visualizzare i messaggi inviati dagli altri utenti del gruppo chat e inviare messaggi propri.
    <div align="center">
