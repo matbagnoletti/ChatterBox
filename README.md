@@ -26,13 +26,26 @@ mvn -v
 ```
 
 ## Installazione e utilizzo
-1. Scaricare il file compresso del progetto e decomprimerlo in una cartella locale.
+Per poter utilizzare l'applicazione ChatterBox procedi a:
+1. Effettuare il clone della repository con il comando:
+   ```bash
+   git clone https://www.github.com/matbagnoletti/ChatterBox.git
+   ```
+   In alternativa, puoi scaricare il file compresso del progetto e decomprimerlo in una cartella locale.
 2. Aprire il terminale nella cartella del progetto
-3. Eseguire il comando per l'avvio dell'applicazione: 
-    ```bash
-    # Assicurati di sostituire '${PATH-TO-JAVAFX-LIB}' con il percorso completo della cartella 'lib' di JavaFX.
-    java --module-path ${PATH-TO-JAVAFX-LIB} --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.graphics -jar .\out\artifacts\ChatterBox_jar\ChatterBox.jar
-    ```
+3. Dopo aver scaricato [Git LFS](https://git-lfs.com/) procedi con la sua configurazione nella cartella locale. Git LFS gestisce il file .jar eseguibile dell'applicazione a causa delle sue elevate dimensioni (>50MB).
+   ```bash
+   # Configurazione
+   git lfs install
+   
+   # Download del file .jar
+   git lfs pull
+   ```
+4. Terminate le operazioni di Git LFS, esegui il comando per l'avvio dell'applicazione, assicurandoti di sostituire <code>${PATH-TO-JAVAFX-LIB}</code> con il percorso completo della cartella <code>lib</code> di JavaFX: 
+   ```bash
+   # Assicurati di sostituire '${PATH-TO-JAVAFX-LIB}' con il percorso completo della cartella 'lib' di JavaFX.
+   java --module-path ${PATH-TO-JAVAFX-LIB} --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.graphics -jar .\out\artifacts\ChatterBox_jar\ChatterBox.jar
+   ```
 
 In alternativa è possibile eseguire il progetto direttamente da un IDE come IntelliJ IDEA.
 
@@ -67,16 +80,16 @@ Il progetto si compone da 2 packages principali:
    La barra di navigazione in alto permette di visualizzare i dettagli del gruppo chat e di modificare le impostazioni di connessione.
    <div align="center">
       <h4>Pannello di controllo: informazioni sull'esecuzione</h4>
-      <img src="screenshot/chat-2.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di chat">
+      <img src="screenshot/chat-2.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pannello di controllo">
    </div>
    In questo esempio gli indirizzi IP e i numeri di porta sono stati nascondi per motivi di privacy.
    <div align="center">
       <h4>Impostazioni: layout e controlli</h4>
-      <img src="screenshot/chat-3.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di chat">
+      <img src="screenshot/chat-3.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Impostazioni">
    </div>
    <div align="center">
       <h4>Aiuto: a proposito di ChatterBox e comandi</h4>
-      <img src="screenshot/chat-4.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di chat">
+      <img src="screenshot/chat-4.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di aiuto">
    </div>
 
 ## Licenza d'uso
