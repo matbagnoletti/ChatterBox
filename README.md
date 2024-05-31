@@ -41,8 +41,11 @@ Per poter utilizzare l'applicazione ChatterBox procedi a:
    # Download dei file .jar
    git lfs pull
    ```
-4. Terminate le operazioni di Git LFS, esegui il comando per l'avvio dell'applicazione, assicurandoti di sostituire <code>${PATH-TO-FX}</code> con il percorso completo della cartella <code>lib</code> di JavaFX: 
+4. Terminate le operazioni di Git LFS, esegui i comandi per l'avvio dell'applicazione, assicurandoti di sostituire <code>${PATH-TO-FX}</code> con il percorso completo della cartella <code>lib</code> di JavaFX: 
    ```bash
+   mvn clean
+   mvn package
+   mvn install
    java --module-path ${PATH-TO-FX} --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.graphics -cp .\target\ChatterBox-2.0.0-shaded.jar edu.avolta.tpsit.chatterbox.ChatterBox
    ```
 
