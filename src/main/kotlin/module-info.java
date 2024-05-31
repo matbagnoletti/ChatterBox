@@ -15,8 +15,10 @@ module edu.avolta.tpsit {
     requires org.kordamp.ikonli.bootstrapicons;
     requires org.kordamp.ikonli.core;
     requires java.desktop;
+    requires okhttp3;
+    requires com.google.gson;
 
-    opens edu.avolta.tpsit.chatterbox to javafx.fxml;
+    opens edu.avolta.tpsit.chatterbox to org.kordamp.ikonli.bootstrapicons, javafx.fxml, com.google.gson, okhttp3;
     exports edu.avolta.tpsit.chatterbox;
     exports edu.avolta.tpsit.multicastudpsocketchat.comunicazione;
     exports edu.avolta.tpsit.multicastudpsocketchat.eccezioni;

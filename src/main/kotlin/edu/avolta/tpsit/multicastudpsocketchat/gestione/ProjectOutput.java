@@ -48,7 +48,7 @@ public class ProjectOutput {
             
             case OutputType.UIERR -> {
                 if(controller != null && controller.application.isUIattiva()){
-                    controller.nuovoElemChat(output, MsgType.GESTIONE, null, null, null);
+                    controller.popup("errore", output);
                 } else if (controller != null && !controller.application.isUIattiva()) {
                     stampa(output, OutputType.STDERR);
                 }

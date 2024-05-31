@@ -9,7 +9,7 @@
 </p>
 
 ## Descrizione
-ChatterBox è un'applicazione di chat che sfrutta il protocollo UDP in modalità multicast per la comunicazione tra più utenti. Il programma permette la creazione di un gruppo chat, la gestione degli utenti e la comunicazione in tempo reale.
+ChatterBox è un'applicazione di chat che sfrutta il protocollo UDP in modalità multicast per la comunicazione tra più utenti. Il programma permette, grazie a un'apposita API RESTful, la creazione di un gruppo chat e il loro accesso tramite credenziali di autenticazione.
 L'interfaccia grafica utilizzata è stata realizzata con JavaFX, mentre la gestione della comunicazione è affidata a Java e Kotlin.
 
 ## Requisiti
@@ -56,12 +56,13 @@ Il progetto si compone da 2 packages principali:
 - Package [`multicastudpsocketchat`](src/main/kotlin/edu/avolta/tpsit/multicastudpsocketchat): contiene le classi di gestione della chat, il cui progetto di riferimento è disponibile [qui](https://www.github.com/matbagnoletti/MulticastUDPSocketChat).
 
 ### Utilizzo
-1. All'avvio dell'applicazione, una schermata di setup permetterà all'utente la configurazione del proprio profilo e le impostazioni di connessione al gruppo chat.
+1. All'avvio dell'applicazione, una schermata di setup permetterà all'utente la configurazione del proprio username e le impostazioni di connessione al gruppo chat.
    <div align="center">
       <img src="screenshot/setup-1.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di configurazione - 1">
    </div> 
    
-   Il nome utente non può essere nullo. L'indirizzo IP del gruppo deve essere di classe D multicast globale (da 224.0.1.0 - 238.255.255.255 esclusi) e la porta deve essere compresa tra 1024 e 65535.
+   Il nome utente deve essere composto da almeno 3 caratteri. Il nome del gruppo è univoco ed ha una lunghezza minima di 6 caratteri, così come la password. La gestione e amministrazione dei gruppi e realizzata mediante una API RESTful apposita che permette la creazione, la modifica e l'eliminazione di gruppi chat.
+   La password del gruppo chat è necessaria per garantire la sicurezza e la privacy dei messaggi scambiati tra gli utenti. Viene memorizzata in forma crittografata e non è possibile recuperarla una volta impostata.   
 
    <div align="center">
         <img src="screenshot/setup-2.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di configurazione - 2">
@@ -69,7 +70,7 @@ Il progetto si compone da 2 packages principali:
    
    Il TTL (Time To Live) è un valore che determina il numero di router attraverso i quali il datagramma può passare. Un valore di 1 indica che il datagramma non può lasciare la sottorete locale, mentre un valore di 255 indica che il datagramma può attraversare un numero illimitato di router. Il valore di default è 128. Per quanto riguarda il loopback dei datagrammi, invece, è possibile disattivarlo per alleggerire il traffico di rete nel solo caso in cui multiple istanze dell'applicazione NON siano eseguite sullo stesso dispositivo.
    
-2. Una volta configurato il profilo, l'utente verrà reindirizzato alla schermata principale dell'applicazione. Qui sarà possibile visualizzare i messaggi inviati dagli altri utenti del gruppo chat e inviare messaggi propri.
+2. Una volta configurato il gruppo, l'utente verrà reindirizzato alla schermata principale dell'applicazione. Qui sarà possibile visualizzare i messaggi inviati dagli altri utenti del gruppo chat e inviare messaggi propri.
    <div align="center">
         <img src="screenshot/chat-1.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Chat">
    </div>
@@ -79,17 +80,24 @@ Il progetto si compone da 2 packages principali:
 
    La barra di navigazione in alto permette di visualizzare i dettagli del gruppo chat e di modificare le impostazioni di connessione.
    <div align="center">
+      <h4>Info gruppo: informazioni di sistema</h4>
+      <img src="screenshot/chat-2.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Info gruppo">
+   </div>
+
+   <div align="center">
       <h4>Pannello di controllo: informazioni sull'esecuzione</h4>
-      <img src="screenshot/chat-2.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pannello di controllo">
+      <img src="screenshot/chat-3.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pannello di controllo">
    </div>
    In questo esempio gli indirizzi IP e i numeri di porta sono stati nascondi per motivi di privacy.
+   
    <div align="center">
       <h4>Impostazioni: layout e controlli</h4>
-      <img src="screenshot/chat-3.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Impostazioni">
+      <img src="screenshot/chat-4.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Impostazioni">
    </div>
+   
    <div align="center">
       <h4>Aiuto: a proposito di ChatterBox e comandi</h4>
-      <img src="screenshot/chat-4.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di aiuto">
+      <img src="screenshot/chat-5.PNG" style="max-width: 600px; margin-top: 1.5rem" alt="Pagina di aiuto">
    </div>
 
 ## Licenza d'uso

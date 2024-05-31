@@ -48,14 +48,19 @@ class ChatterBox : Application() {
     private lateinit var multicastPeer: MulticastPeer
 
     /**
-     * RR con i dati per la chat
+     * RRConfig con i dati per la chat
      */
-    private lateinit var resourceRecord : RR
+    private lateinit var resourceRecord : RRConfig
+
+    /**
+     * Controller del setup
+     */
+    private lateinit var ctrlSetup : ChatSetupController
     
     /**
      * Controller della chat
      */
-    private lateinit var ctrl : ChatterBoxController
+    private lateinit var ctrlChat : ChatterBoxController
     
     override fun start(stage: Stage) {
         /* CSS AtlantaFX*/
@@ -70,19 +75,25 @@ class ChatterBox : Application() {
         stage.show()
         isUIattiva = true
         stageCorrente = stage
+        ctrlSetup = fxmlLoader.getController<ChatSetupController>()
+        
+        stage.setOnCloseRequest {
+            ctrlSetup.disconnettiWS()
+        }
     }
 
     /**
      * Avvia la scena con la chat principale
-     * @param resourceRecord RR con i dati per la chat
+     * @param resourceRecord RRConfig con i dati per la chat
+     * @param nomeChat il nome della chat
      */
-    fun avviaChat(resourceRecord : RR) {
+    fun avviaChat(resourceRecord : RRConfig, nomeChat: String) {
         this.resourceRecord = resourceRecord
         stageCorrente.close()
         isUIattiva = false
         val scene = creaScena("fxml/chatterbox-view.fxml", 650.0, 445.0)
         val stage = Stage()
-        stage.title = "ChatterBox"
+        stage.title = "ChatterBox: $nomeChat"
         scene.also { stage.scene = it }
         stage.isResizable = false
         val iconImage = Image(ChatterBox::class.java.getResourceAsStream("img/chatterbox.png"))
@@ -90,9 +101,9 @@ class ChatterBox : Application() {
         stage.show()
         isUIattiva = true
         stageCorrente = stage
-        ctrl = fxmlLoader.getController<ChatterBoxController>()
-        ctrl.application = this
-        ProjectOutput.controller = ctrl
+        ctrlChat = fxmlLoader.getController<ChatterBoxController>()
+        ctrlChat.application = this
+        ProjectOutput.controller = ctrlChat
         try {
             avviaDaRR()
         } catch (e: Exception) {
@@ -100,6 +111,7 @@ class ChatterBox : Application() {
         }
         
         stage.setOnCloseRequest {
+            ctrlSetup.disconnettiWS()
             isUIattiva = false
             multicastPeer.chiudi()
         }
@@ -148,15 +160,16 @@ class ChatterBox : Application() {
     }
 
     /**
-     * Avvia la chat da un RR
+     * Avvia la chat da un RRConfig
      * @throws Exception se ci sono errori nella configurazione
      */
     @Throws(Exception::class)
     fun avviaDaRR() {
-        groupChat = GroupChat(resourceRecord.indirizzoIP, resourceRecord.porta.toInt(), resourceRecord.ttl.toInt(), resourceRecord.loopbackOff)
-        multicastPeer = MulticastPeer(resourceRecord.username, true, groupChat, ctrl, resourceRecord)
+        groupChat = GroupChat(resourceRecord.ws.idChat, resourceRecord.ws.pswChat, resourceRecord.indirizzoIP, resourceRecord.porta.toInt(), resourceRecord.ttl.toInt(), resourceRecord.loopbackOff)
+        multicastPeer = MulticastPeer(resourceRecord.username, true, groupChat, ctrlChat, resourceRecord)
         multicastPeer.configura()
         multicastPeer.avvia()
+        ctrlChat.aggiornaInfoGruppo(resourceRecord.username, resourceRecord.ws.nomeChat, resourceRecord.ws.pswChat)
     }
 }
 

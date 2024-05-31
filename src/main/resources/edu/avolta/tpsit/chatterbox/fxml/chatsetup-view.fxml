@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Tab?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane cache="true" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.avolta.tpsit.chatterbox.ChatSetupController">
+<AnchorPane fx:id="schermo" cache="true" prefHeight="350.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.avolta.tpsit.chatterbox.ChatSetupController">
    <children>
       <TabPane prefHeight="350.0" prefWidth="500.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -29,28 +30,35 @@
                               <Font name="Inter Regular" size="14.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="indirizzoIP" alignment="CENTER" layoutX="151.0" layoutY="115.0" onKeyReleased="#controllaForm" onKeyTyped="#controllaForm" prefHeight="29.0" prefWidth="198.0" promptText="es. 230.19.6.5" AnchorPane.topAnchor="115.0">
+                        <TextField fx:id="nomeGruppo" alignment="CENTER" layoutX="151.0" layoutY="115.0" onKeyReleased="#controllaForm" onKeyTyped="#controllaForm" prefHeight="29.0" prefWidth="198.0" promptText="es. chatterbox" AnchorPane.topAnchor="115.0">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </TextField>
-                        <Text layoutX="174.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Indirizzo IP del gruppo" textAlignment="CENTER" AnchorPane.topAnchor="90.0">
+                        <Text layoutX="151.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome del gruppo" textAlignment="CENTER" wrappingWidth="196.0170440673828" AnchorPane.topAnchor="90.0">
                            <font>
                               <Font name="Inter Regular" size="14.0" />
                            </font>
                         </Text>
-                        <TextField fx:id="porta" alignment="CENTER" layoutX="151.0" layoutY="182.0" onKeyReleased="#controllaForm" onKeyTyped="#controllaForm" prefHeight="29.0" prefWidth="198.0" promptText="es. 19065" AnchorPane.topAnchor="190.0">
+                        <PasswordField fx:id="passwordGruppo" alignment="CENTER" layoutX="151.0" layoutY="182.0" onKeyReleased="#controllaForm" onKeyTyped="#controllaForm" prefHeight="29.0" prefWidth="198.0" promptText="es. password" AnchorPane.topAnchor="190.0">
                            <font>
-                              <Font size="15.0" />
+                              <Font name="Inter Regular" size="15.0" />
                            </font>
-                        </TextField>
-                        <Text layoutX="197.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Porta del gruppo" textAlignment="CENTER" AnchorPane.topAnchor="165.0">
+                        </PasswordField>
+                        <Text layoutX="151.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password del gruppo" textAlignment="CENTER" wrappingWidth="198.3778533935547" AnchorPane.topAnchor="165.0">
                            <font>
                               <Font name="Inter Regular" size="14.0" />
                            </font>
                         </Text>
-                        <Button fx:id="btnStart" disable="true" layoutX="244.0" layoutY="249.0" mnemonicParsing="false" onAction="#avviaChat" prefHeight="30.0" prefWidth="105.0" text="Avvia chat" />
-                        <Button fx:id="btnInfo" layoutX="151.0" layoutY="249.0" mnemonicParsing="false" onAction="#info" prefHeight="30.0" prefWidth="82.0" />
+                        <Button fx:id="btnStart" alignment="CENTER" defaultButton="true" disable="true" layoutX="267.0" layoutY="249.0" mnemonicParsing="false" onAction="#avviaChat" prefHeight="36.0" prefWidth="80.0" text="Accedi">
+                           <font>
+                              <Font name="Inter Semi Bold" size="12.0" />
+                           </font></Button>
+                        <Button fx:id="btnCreaGruppo" alignment="CENTER" layoutX="151.0" layoutY="249.0" mnemonicParsing="false" onAction="#creaGruppo" prefHeight="36.0" prefWidth="111.0" text="Crea Gruppo">
+                           <font>
+                              <Font name="Inter Regular" size="12.0" />
+                           </font>
+                        </Button>
                      </children>
                   </AnchorPane>
             </content>

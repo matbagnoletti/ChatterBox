@@ -18,6 +18,15 @@ import java.util.Enumeration;
  * @project MulticastUDPSocketChat
  */
 public class GroupChat {
+    /**
+     * L'identificativo del gruppo ChatterBox memorizzato nel database e fornito dal Web Service
+     */
+    private final int idWSChatterbox;
+
+    /**
+     * La password del gruppo ChatterBox memorizzata nel database e fornita dal Web Service
+     */
+    private final String pswGruppo;
     
     /**
      * Socket per la comunicazione con un <code>gruppo</code> multicast
@@ -47,14 +56,18 @@ public class GroupChat {
     
     /**
      * Crea e configura opportunamente la {@link #multicastSocket}
+     * @param idWSChatterbox l'identificativo del gruppo ChatterBox memorizzato nel database e fornito dal Web Service
+     * @param pswGruppo la password del gruppo ChatterBox memorizzata nel database per l'autenticazione
      * @param indirizzoMulticast l'{@link InetAddress} del <code>gruppo</code>
      * @param portaMulticast la porta del <code>gruppo</code>
      * @throws IllegalArgumentException se uno dei due parametri non risulta valido
      * @throws IOException se si verifica un errore di I/O
      * @throws CommunicationException se il programma non è riuscito a identificare una {@link NetworkInterface} disponibile
      */
-    public GroupChat(final String indirizzoMulticast, final int portaMulticast, final int ttl, final boolean loopbackOff) throws IOException, CommunicationException, IllegalArgumentException {
-        ChatLogger.log("Forniti -> IPv4 o nome di dominio del gruppo: " + indirizzoMulticast + " | Numero di porta del gruppo: " + portaMulticast, ChatLoggerType.OPTIONAL);
+    public GroupChat(final int idWSChatterbox, final String pswGruppo, final String indirizzoMulticast, final int portaMulticast, final int ttl, final boolean loopbackOff) throws IOException, CommunicationException, IllegalArgumentException {
+        this.idWSChatterbox = idWSChatterbox;
+        this.pswGruppo = pswGruppo;
+        ChatLogger.log("Forniti -> id: " + idWSChatterbox + " | IPv4 o nome di dominio del gruppo: " + indirizzoMulticast + " | Numero di porta del gruppo: " + portaMulticast, ChatLoggerType.OPTIONAL);
         if(portaMulticast < 1024 || portaMulticast > 65535 ) {
             throw new IllegalArgumentException("Porta non nel range valido (1024-65535)");
         }
@@ -159,6 +172,22 @@ public class GroupChat {
      */
     public int getPortaGruppo() {
         return portaGruppo;
+    }
+
+    /**
+     * Restituisce l'identificativo del gruppo ChatterBox
+     * @return l'identificativo del gruppo ChatterBox
+     */
+    public int getIdWSChatterbox() {
+        return idWSChatterbox;
+    }
+
+    /**
+     * Restituisce la password del gruppo ChatterBox
+     * @return la password del gruppo ChatterBox
+     */
+    public String getPswGruppo() {
+        return pswGruppo;
     }
 
     /**

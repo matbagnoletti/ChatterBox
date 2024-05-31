@@ -1,26 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import atlantafx.base.controls.ToggleSwitch?>
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
-<?import javafx.geometry.Rectangle2D?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.Hyperlink?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.text.Text?>
+<?import atlantafx.base.controls.*?>
+<?import java.lang.*?>
+<?import javafx.collections.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="445.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.avolta.tpsit.chatterbox.ChatterBoxController">
+<AnchorPane fx:id="schermo" prefHeight="445.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.avolta.tpsit.chatterbox.ChatterBoxController">
    <children>
       <TabPane prefHeight="445.0" prefWidth="650.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -40,12 +29,64 @@
                               <Font name="Inter Regular" size="14.0" />
                            </font>
                         </Text>
-                        <Separator layoutX="225.0" layoutY="23.0" prefWidth="200.0" AnchorPane.bottomAnchor="357.0" AnchorPane.leftAnchor="200.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="23.0" />
                         <Separator layoutX="14.0" layoutY="329.0" prefHeight="25.0" prefWidth="411.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+                        <HBox fx:id="numPartecipanti" alignment="CENTER" cache="true" layoutX="225.0" layoutY="9.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.bottomAnchor="379.0" AnchorPane.leftAnchor="225.0" AnchorPane.rightAnchor="225.0" AnchorPane.topAnchor="12.0" />
                      </children>
               </AnchorPane>
             </content>
           </Tab>
+            <Tab text="Info gruppo">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Text fx:id="impUsername" layoutX="36.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username (tu):" textAlignment="CENTER" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="40.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="impNomeGruppo" layoutX="36.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nome identificativo:" textAlignment="CENTER" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="80.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Text>
+                        <Text fx:id="impPasswordGruppo" layoutX="36.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" textAlignment="CENTER" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="120.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Text>
+                        <ImageView cache="true" fitHeight="107.0" fitWidth="112.0" layoutX="494.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="275.0" AnchorPane.leftAnchor="495.0" AnchorPane.rightAnchor="49.0" AnchorPane.topAnchor="35.0">
+                           <image>
+                              <Image url="@../img/chatterboxMAX.png" />
+                           </image>
+                           <viewport>
+                              <Rectangle2D minX="70.0" minY="70.0" />
+                           </viewport>
+                        </ImageView>
+                        <Label fx:id="iconUsername" alignment="CENTER" cache="true" contentDisplay="CENTER" layoutX="25.0" layoutY="39.0" prefHeight="20.0" prefWidth="25.0" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="40.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="iconNomeGruppo" alignment="CENTER" cache="true" contentDisplay="CENTER" layoutX="25.0" layoutY="78.0" prefHeight="20.0" prefWidth="25.0" AnchorPane.topAnchor="80.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="iconPasswordGruppo" alignment="CENTER" cache="true" contentDisplay="CENTER" layoutX="25.0" layoutY="119.0" prefHeight="20.0" prefWidth="25.0" AnchorPane.topAnchor="120.0">
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                        </Label>
+                        <Separator layoutX="37.0" layoutY="190.0" prefHeight="0.0" prefWidth="577.0" />
+                        <Text layoutX="38.0" layoutY="238.0" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dalla versone v2.0.0 ChatterBox non prevede più la gestione manuale dei gruppi mediante indirizzo IPv4 multicast e numero di porta. L'intera gestione è affidata al Web Service con API RESTful di ChatterBox, il quale opera creando e configurando appositamente le chat. Dall'interfaccia grafica è possibile richiedere la creazione di un gruppo con nome identificativo e password (storicizzata in modo cifrato nel DB), fornendo semplici e pratiche credenziali di autenticazione per gli altri membri." wrappingWidth="575.0">
+                           <font>
+                              <Font name="Inter Regular" size="13.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
           <Tab text="Pannello di controllo">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
@@ -166,7 +207,7 @@
                            </children>
                         </HBox>
                         <Separator layoutX="25.0" layoutY="346.0" prefWidth="200.0" AnchorPane.bottomAnchor="67.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="346.0" />
-                        <Hyperlink alignment="CENTER_RIGHT" cache="true" contentDisplay="CENTER" layoutX="25.0" layoutY="357.0" minHeight="33.0" minWidth="120.0" mnemonicParsing="true" onAction="#linkGitHub" prefHeight="33.0" prefWidth="120.0" text="Build v1.0.0" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="357.0" />
+                        <Hyperlink alignment="CENTER_RIGHT" cache="true" contentDisplay="CENTER" layoutX="25.0" layoutY="357.0" minHeight="33.0" minWidth="120.0" mnemonicParsing="true" onAction="#linkGitHub" prefHeight="33.0" prefWidth="120.0" text="Build v2.0.0" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="357.0" />
                         <Text layoutX="25.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lingua:" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="220.0">
                            <font>
                               <Font name="Inter Regular" size="14.0" />

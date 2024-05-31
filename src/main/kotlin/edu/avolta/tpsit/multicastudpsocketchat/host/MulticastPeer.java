@@ -1,7 +1,8 @@
 package edu.avolta.tpsit.multicastudpsocketchat.host;
 
 import edu.avolta.tpsit.chatterbox.ChatterBoxController;
-import edu.avolta.tpsit.chatterbox.RR;
+import edu.avolta.tpsit.chatterbox.RRConfig;
+import edu.avolta.tpsit.chatterbox.WSHandler;
 import edu.avolta.tpsit.multicastudpsocketchat.comunicazione.MsgType;
 import edu.avolta.tpsit.multicastudpsocketchat.comunicazione.Protocollo;
 import edu.avolta.tpsit.multicastudpsocketchat.eccezioni.ProtocolException;
@@ -15,6 +16,7 @@ import edu.avolta.tpsit.multicastudpsocketchat.eccezioni.CommunicationException;
 import edu.avolta.tpsit.multicastudpsocketchat.eccezioni.MsgException;
 import edu.avolta.tpsit.multicastudpsocketchat.eccezioni.NoSuchUserException;
 import edu.avolta.tpsit.multicastudpsocketchat.utenze.*;
+import javafx.util.Callback;
 
 import java.io.IOException;
 import java.net.*;
@@ -69,8 +71,8 @@ public class MulticastPeer {
      * @param abilitaLog indica se abilitare le funzioni di logging
      * @throws IllegalArgumentException nei casi previsti dalla creazione dell'{@link Utente}
      */
-    public MulticastPeer(final String username, final boolean abilitaLog, final GroupChat gruppo, final ChatterBoxController controller, final RR resourceRecord) throws IllegalArgumentException {
-        /* recupero dati da RR */
+    public MulticastPeer(final String username, final boolean abilitaLog, final GroupChat gruppo, final ChatterBoxController controller, final RRConfig resourceRecord) throws IllegalArgumentException {
+        /* recupero dati da RRConfig */
         if(resourceRecord.getUtente() != null){
             utente = resourceRecord.getUtente();
         } else {
@@ -88,7 +90,7 @@ public class MulticastPeer {
         }
         gruppoUDP = gruppo;
 
-        /* aggiornamento RR */
+        /* aggiornamento RRConfig */
         resourceRecord.setUtente(utente);
         resourceRecord.setRubrica(rubrica);
         resourceRecord.setCronologia(cronologia);
@@ -207,7 +209,7 @@ public class MulticastPeer {
                                 String utenteRimosso = rubrica.rimuoviUtente(msgRicevuto.getIDutente(), controller);
                                 ProjectOutput.stampa(utenteRimosso + " ha abbandonato il gruppo", OutputType.UIOUT);
                             } else if (msgRicevuto.getMsg().equals("join-group")) {
-                                ProjectOutput.stampa(rubrica.ottieniAliasDaUUID(msgRicevuto.getUtente().getIDutente()) + " si è unit* al gruppo", OutputType.UIOUT);
+                                ProjectOutput.stampa(rubrica.ottieniAliasDaUUID(msgRicevuto.getUtente().getIDutente()) + " si è unito/a al gruppo", OutputType.UIOUT);
                                 ChatLogger.log("Tentativo di invio del messaggio di saluto in corso...", ChatLoggerType.OPTIONAL);
                                 invia("DO-NOT-SHOW-THIS-MESSAGE");
                             } else {
@@ -414,7 +416,7 @@ public class MulticastPeer {
         if (messaggioMulticast.equals("left-group")) {
             ProjectOutput.stampa("Hai abbandonato il gruppo", OutputType.UIOUT);
         } else if (messaggioMulticast.equals("join-group")) {
-            ProjectOutput.stampa("Ti sei unit* al gruppo", OutputType.UIOUT);
+            ProjectOutput.stampa("Ti sei unito/a al gruppo", OutputType.UIOUT);
         } else if (!messaggioMulticast.equals("DO-NOT-SHOW-THIS-MESSAGE")) {
             controller.nuovoElemChat(messaggioMulticast, MsgType.INVIO, id, null, messaggio.getTimestamp());
         }
@@ -513,6 +515,9 @@ public class MulticastPeer {
             } catch (Exception e){
                 ProjectOutput.stampa("Impossibile inviare il messaggio di uscita dal gruppo", OutputType.STDERR);
             }
+            
+            // TODO: implementare l'eliminazione del gruppo dal Web Service
+            
             setOnline(false);
             ChatLogger.log("Terminazione in corso...", ChatLoggerType.MANDATORY);
 

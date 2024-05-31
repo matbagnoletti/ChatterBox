@@ -1,19 +1,24 @@
 package edu.avolta.tpsit.chatterbox
 
+import atlantafx.base.controls.Notification
 import atlantafx.base.theme.Styles
+import atlantafx.base.util.Animations
 import edu.avolta.tpsit.multicastudpsocketchat.comunicazione.MsgType
 import edu.avolta.tpsit.multicastudpsocketchat.gestione.ChatLogger
 import javafx.application.Platform
+import javafx.event.EventHandler
 import javafx.fxml.FXML
 import javafx.geometry.Insets
 import javafx.geometry.Pos
 import javafx.scene.control.*
 import javafx.scene.input.KeyCode
+import javafx.scene.layout.AnchorPane
 import javafx.scene.layout.HBox
 import javafx.scene.layout.VBox
 import javafx.scene.paint.Color
 import javafx.scene.text.Text
 import javafx.stage.FileChooser
+import javafx.util.Duration
 import org.kordamp.ikonli.bootstrapicons.BootstrapIcons
 import org.kordamp.ikonli.javafx.FontIcon
 import java.time.LocalDateTime
@@ -38,6 +43,24 @@ class ChatterBoxController {
     private lateinit var inputMsg : TextField
     @FXML
     private lateinit var onlineCount : Text
+    @FXML
+    private lateinit var numPartecipanti: HBox
+
+    /* Info gruppo */
+    @FXML
+    private lateinit var impUsername : Text
+    @FXML
+    private lateinit var impNomeGruppo : Text
+    @FXML
+    private lateinit var impPasswordGruppo : Text
+
+    /* icone info gruppo */
+    @FXML
+    private lateinit var iconUsername: Label
+    @FXML
+    private lateinit var iconNomeGruppo: Label
+    @FXML
+    private lateinit var iconPasswordGruppo: Label
     
     /* info dashboard*/
     @FXML
@@ -85,6 +108,10 @@ class ChatterBoxController {
     @FXML
     private lateinit var logScreen : ListView<HBox>
     
+    /* popup */
+    @FXML
+    private lateinit var schermo : AnchorPane
+    
     /**
      * Riferimento all'applicazione principale
      */
@@ -110,6 +137,9 @@ class ChatterBoxController {
         iconStatistiche.graphic = FontIcon(BootstrapIcons.CHECK2_ALL)
         iconTemaChiaro.graphic = FontIcon(BootstrapIcons.SUN)
         iconTemaScuro.graphic = FontIcon(BootstrapIcons.MOON_FILL)
+        iconUsername.graphic = FontIcon(BootstrapIcons.PERSON)
+        iconNomeGruppo.graphic = FontIcon(BootstrapIcons.AT)
+        iconPasswordGruppo.graphic = FontIcon(BootstrapIcons.KEY)
         
         onlineCount.styleClass.addAll(Styles.TEXT, Styles.ACCENT)
         
@@ -217,14 +247,15 @@ class ChatterBoxController {
 
                 // 1) riga di intestazione con data completa e tutti i dati della chat (indirizzo IP, porta, ecc)
                 selectedFile.writeText("ChatterBox - Storico della chat\n\n")
+                selectedFile.writeText("Gruppo: ${impNomeGruppo.text}\n")
                 selectedFile.appendText("Data: ${LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}\n")
-                selectedFile.appendText("Indirizzo IP locale: ${impIndirizzoIPLocale.text}\n")
-                selectedFile.appendText("Porta locale: ${impPortaLocale.text}\n")
-                selectedFile.appendText("Indirizzo IP gruppo: ${impIndirizzoIPGruppo.text}\n")
-                selectedFile.appendText("Porta gruppo: ${impPortaGruppo.text}\n")
-                selectedFile.appendText("Messaggi inviati: ${impMessaggiOut.text}\n")
-                selectedFile.appendText("Messaggi ricevuti: ${impMessaggiIn.text}\n")
-                selectedFile.appendText("Messaggi inviati con successo: ${impStatistiche.text}\n\n")
+                selectedFile.appendText("${impIndirizzoIPLocale.text}\n")
+                selectedFile.appendText("${impPortaLocale.text}\n")
+                selectedFile.appendText("${impIndirizzoIPGruppo.text}\n")
+                selectedFile.appendText("${impPortaGruppo.text}\n")
+                selectedFile.appendText("${impMessaggiOut.text}\n")
+                selectedFile.appendText("${impMessaggiIn.text}\n")
+                selectedFile.appendText("${impStatistiche.text}\n\n")
 
                 // 2) storico della chat
                 storicoChat.forEach { 
@@ -389,10 +420,21 @@ class ChatterBoxController {
     @Synchronized
     fun aggiornaUtentiOnline(numUtenti : String? = null) {
         Platform.runLater {
-            if(numUtenti == null) onlineCount.text = "Info chat non disponibili"
-            else if(numUtenti.toInt() == 0) onlineCount.text = "Caricamento info in corso..."
-            else if(numUtenti.toInt() == 1) onlineCount.text = "1 utente online (tu)"
-            else if(numUtenti.toInt() > 1) onlineCount.text = "Utenti online: $numUtenti"
+            
+            if(numPartecipanti.children.size != 0) numPartecipanti.children.clear()
+            
+            val icona = FontIcon(BootstrapIcons.PEOPLE).apply {
+                iconSize = 22
+                styleClass.addAll(Styles.TEXT, Styles.ACCENT)
+            }
+            
+            numPartecipanti.spacing = 5.0
+            
+            val num = Text(numUtenti ?: "*").apply {
+                styleClass.addAll(Styles.TEXT, Styles.TEXT_BOLD)
+            }
+            
+            numPartecipanti.children.addAll(icona, num)
         }
     }
 
@@ -445,6 +487,60 @@ class ChatterBoxController {
             impMessaggiOut.text = "Messaggi inviati: $messaggiOut"
             impMessaggiIn.text = "Messaggi ricevuti: $messaggiIn"
             impStatistiche.text = "Messaggi inviati con successo: $statistiche"
+        }
+    }
+
+    /**
+     * Aggiorna le informazioni del gruppo
+     */
+    @Synchronized
+    fun aggiornaInfoGruppo(username : String? = "non disponibile", nomeGruppo : String? = "non disponibile", passwordGruppo : String? = "non disponibile") {
+        Platform.runLater {
+            impUsername.text = "Username (tu): $username"
+            impNomeGruppo.text = "Nome gruppo: $nomeGruppo"
+            
+            // mostro solo le prime 6 cifre della password
+            val pswRistretta = "${passwordGruppo?.substring(0, 10)}..."
+            impPasswordGruppo.text = "Password gruppo: $pswRistretta"
+        }
+    }
+
+    /**
+     * Mostra a schermo un popup generico
+     * @param tipo tipo di popup (successo o errore)
+     * @param msg messaggio da visualizzare
+     */
+    @Synchronized
+    fun popup(tipo: String, msg: String) {
+        Platform.runLater {
+            val avviso = Notification(
+                msg,
+                FontIcon(BootstrapIcons.EXCLAMATION_CIRCLE)
+            )
+            if(tipo == "successo") {
+                avviso.styleClass.addAll(
+                    Styles.SUCCESS, Styles.ELEVATED_1
+                )
+            } else {
+                avviso.styleClass.addAll(
+                    Styles.DANGER, Styles.ELEVATED_1
+                )
+            }
+            avviso.onClose = EventHandler {
+                val out = Animations.slideOutUp(avviso, Duration.seconds(0.5))
+                out.onFinished = EventHandler {
+                    if(schermo.children.contains(avviso))
+                        schermo.children.remove(avviso)
+                }
+                out.play()
+            }
+            avviso.prefHeight = 50.0
+            avviso.maxWidth = 250.0 + msg.length
+            avviso.padding = Insets(5.0)
+            avviso.layoutX = schermo.width - avviso.maxWidth - 1
+            avviso.layoutY = 10.0
+            schermo.children.add(avviso)
+            Animations.slideInDown(avviso, Duration.seconds(1.5)).play()
         }
     }
 }
