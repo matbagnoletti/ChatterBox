@@ -33,18 +33,17 @@ Per poter utilizzare l'applicazione ChatterBox procedi a:
    ```
    In alternativa, puoi scaricare il file compresso del progetto e decomprimerlo in una cartella locale.
 2. Aprire il terminale nella cartella del progetto
-3. Dopo aver scaricato [Git LFS](https://git-lfs.com/) procedi con la sua configurazione nella cartella locale. Git LFS gestisce il file .jar eseguibile dell'applicazione a causa delle sue elevate dimensioni (>50MB).
+3. Dopo aver scaricato [Git LFS](https://git-lfs.com/) procedi con la sua configurazione nella cartella locale. Git LFS gestisce i file .jar eseguibili dell'applicazione a causa delle sue elevate dimensioni (>50MB).
    ```bash
    # Configurazione
    git lfs install
    
-   # Download del file .jar
+   # Download dei file .jar
    git lfs pull
    ```
-4. Terminate le operazioni di Git LFS, esegui il comando per l'avvio dell'applicazione, assicurandoti di sostituire <code>${PATH-TO-JAVAFX-LIB}</code> con il percorso completo della cartella <code>lib</code> di JavaFX: 
+4. Terminate le operazioni di Git LFS, esegui il comando per l'avvio dell'applicazione, assicurandoti di sostituire <code>${PATH-TO-FX}</code> con il percorso completo della cartella <code>lib</code> di JavaFX: 
    ```bash
-   # Assicurati di sostituire '${PATH-TO-JAVAFX-LIB}' con il percorso completo della cartella 'lib' di JavaFX.
-   java --module-path ${PATH-TO-JAVAFX-LIB} --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.graphics -jar .\out\artifacts\ChatterBox_jar\ChatterBox.jar
+   java --module-path ${PATH-TO-FX} --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.graphics -cp .\target\ChatterBox-2.0.0-shaded.jar edu.avolta.tpsit.chatterbox.ChatterBox
    ```
 
 In alternativa è possibile eseguire il progetto direttamente da un IDE come IntelliJ IDEA.

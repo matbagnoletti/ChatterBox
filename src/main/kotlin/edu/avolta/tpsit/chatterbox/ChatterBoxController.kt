@@ -159,7 +159,7 @@ class ChatterBoxController {
     private fun aggiornaCtrlBtn() {
         if (isChatAttiva) {
             btnDiControllo("Termina", ::preparaRiavvio)
-            aggiornaUtentiOnline("0")
+            aggiornaUtentiOnline()
         } else {
             btnDiControllo("Riconnetti", ::riavviaChat)
             aggiornaUtentiOnline()

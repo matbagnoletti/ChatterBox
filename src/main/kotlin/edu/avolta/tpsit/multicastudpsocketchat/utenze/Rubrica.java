@@ -56,11 +56,11 @@ public class Rubrica {
             }
             
             rubricaList.add(new IndiceRubrica(alias, utente.getIDutente(), inetAddress, porta));
-            ctrl.aggiornaUtentiOnline(String.valueOf(rubricaList.size()+1));
             ChatLogger.log("(Rubrica) tentativo di inserimento riuscito: memorizzato come " + alias, ChatLoggerType.OPTIONAL);
         } else {
             ChatLogger.log("(Rubrica) tentativo di inserimento fallito: l'utente potrebbe corrispondere all'utente corrente o è già presente in rubrica", ChatLoggerType.OPTIONAL);
         }
+        ctrl.aggiornaUtentiOnline(String.valueOf(rubricaList.size()+1));
     }
 
     /**

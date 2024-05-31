@@ -409,17 +409,22 @@ public class MulticastPeer {
     private synchronized void invia(String messaggioMulticast) throws MsgException, CommunicationException, ProtocolException, UnknownHostException {
         ChatLogger.log("Invio messaggio multicast in corso...", ChatLoggerType.OPTIONAL);
         int id = cronologia.getNewID();
-        Messaggio messaggio = new Messaggio(id, utente, unicastSocket.getLocalPort(), rubrica.partecipantiGruppo(), messaggioMulticast, true, Protocollo.UDP.multicast);
+        Messaggio messaggio;
+        if (messaggioMulticast.equals("left-group")) {
+            ProjectOutput.stampa("Hai abbandonato il gruppo", OutputType.UIOUT);
+            messaggio = new Messaggio(id, utente, unicastSocket.getLocalPort(), 0, messaggioMulticast, true, Protocollo.UDP.multicast);
+        } else if (messaggioMulticast.equals("join-group")) {
+            ProjectOutput.stampa("Ti sei unito/a al gruppo", OutputType.UIOUT);
+            messaggio = new Messaggio(id, utente, unicastSocket.getLocalPort(), 0, messaggioMulticast, true, Protocollo.UDP.multicast);
+        } else if (!messaggioMulticast.equals("DO-NOT-SHOW-THIS-MESSAGE")) {
+            messaggio = new Messaggio(id, utente, unicastSocket.getLocalPort(), rubrica.partecipantiGruppo(), messaggioMulticast, true, Protocollo.UDP.multicast);
+            controller.nuovoElemChat(messaggioMulticast, MsgType.INVIO, id, null, messaggio.getTimestamp());
+        } else {
+            messaggio = new Messaggio(id, utente, unicastSocket.getLocalPort(), rubrica.partecipantiGruppo(), messaggioMulticast, true, Protocollo.UDP.multicast);
+        }
         cronologia.storicizzaMessaggio(messaggio);
         byte[] out = Messaggio.configMsg(messaggio);
         gruppoUDP.multicast(out);
-        if (messaggioMulticast.equals("left-group")) {
-            ProjectOutput.stampa("Hai abbandonato il gruppo", OutputType.UIOUT);
-        } else if (messaggioMulticast.equals("join-group")) {
-            ProjectOutput.stampa("Ti sei unito/a al gruppo", OutputType.UIOUT);
-        } else if (!messaggioMulticast.equals("DO-NOT-SHOW-THIS-MESSAGE")) {
-            controller.nuovoElemChat(messaggioMulticast, MsgType.INVIO, id, null, messaggio.getTimestamp());
-        }
         controller.aggiornaDashboard(InetAddress.getLocalHost().getHostAddress(), String.valueOf(this.unicastSocket.getLocalPort()), this.gruppoUDP.getIndirizzoMulticast().toString(), String.valueOf(this.gruppoUDP.getPortaGruppo()), String.valueOf(this.cronologia.getMessaggiInviati()), String.valueOf(this.cronologia.getMessaggiRicevuti()), this.cronologia.getSimpleStat());
     }
 
