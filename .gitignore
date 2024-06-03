@@ -36,3 +36,7 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+/out/
+/target/
+!/target/ChatterBox-2.0.0-shaded.jar
