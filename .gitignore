@@ -39,8 +39,9 @@ build/
 /out/
 /target/classes
 /target/generated-sources
-/target/maven-achiver
+/target/maven-archiver
 /target/maven-status
 /target/ChatterBox-2.0.0.jar
 /target/original-ChatterBox-2.0.0.jar
 !/target/ChatterBox-2.0.0-shaded.jar
+/target/!ChatterBox-2.0.0-shaded.jar
