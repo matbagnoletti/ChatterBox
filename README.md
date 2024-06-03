@@ -17,6 +17,7 @@ L'interfaccia grafica utilizzata è stata realizzata con JavaFX, mentre la gesti
 - [JavaFX](https://openjfx.io/) (v22.0.1)
 - [Maven](https://maven.apache.org/download.cgi)
 - [Git](https://git-scm.com/downloads)
+- [Git LFS](https://git-lfs.com/)
 
 È possibile visualizzare le versioni già presenti sul proprio dispositivo mediante i seguenti comandi:
 ```bash
@@ -32,7 +33,15 @@ Per poter utilizzare l'applicazione ChatterBox procedi a:
    ```
    In alternativa, effettua il download del file compresso del progetto ed estrailo in una cartella locale del tuo computer.
 2. Aprire il terminale nella cartella del progetto
-3. Esegui i comandi per l'avvio dell'applicazione, assicurandoti di sostituire <code>${PATH-TO-FX}</code> con il percorso completo della cartella <code>lib</code> di JavaFX: 
+3. Dopo aver scaricato [Git LFS](https://git-lfs.com/) procedi con la sua configurazione nella cartella locale. Git LFS gestisce i file .jar eseguibili dell'applicazione a causa delle sue elevate dimensioni (superiore a 50MB).
+   ```bash
+   # Configurazione
+   git lfs install
+   
+   # Download dei file .jar
+   git lfs pull
+   ```
+4. Terminate le operazioni di Git LFS, esegui i comandi per l'avvio dell'applicazione, assicurandoti di sostituire <code>${PATH-TO-FX}</code> con il percorso completo della cartella <code>lib</code> di JavaFX: 
    ```bash
    mvn clean
    mvn package
