@@ -1,25 +1,22 @@
 module edu.avolta.tpsit {
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.web;
     requires kotlin.stdlib;
     requires javafx.graphics;
-
-    requires org.controlsfx.controls;
-    requires com.dlsc.formsfx;
-    requires net.synedra.validatorfx;
+    
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
-    requires eu.hansolo.tilesfx;
-    requires atlantafx.base;
     requires org.kordamp.ikonli.bootstrapicons;
     requires org.kordamp.ikonli.core;
-    requires java.desktop;
+    
+    requires atlantafx.base;
+    
     requires okhttp3;
     requires com.google.gson;
 
     opens edu.avolta.tpsit.chatterbox to org.kordamp.ikonli.bootstrapicons, javafx.fxml, com.google.gson, okhttp3;
     exports edu.avolta.tpsit.chatterbox;
+    exports edu.avolta.tpsit.security;
     exports edu.avolta.tpsit.multicastudpsocketchat.comunicazione;
     exports edu.avolta.tpsit.multicastudpsocketchat.eccezioni;
     exports edu.avolta.tpsit.multicastudpsocketchat.gestione;

@@ -115,7 +115,7 @@ class ChatSetupController {
         ws.creaGruppo(nome, password) { esito ->
             if (esito is RRWebService) {
                 popup("successo", "Gruppo creato con successo")
-                val resourceRecord = RRConfig(esito, username = username, indirizzoIP = esito.ipChat, porta = esito.portaChat, ttl = ttl, loopbackOff = loopbackOff)
+                val resourceRecord = RRConfig(esito, username = username, sGateKey = password, indirizzoIP = esito.ipChat, porta = esito.portaChat, ttl = ttl, loopbackOff = loopbackOff)
                 Thread.sleep(1500)
                 Platform.runLater{
                     application.avviaChat(resourceRecord, esito.nomeChat)
@@ -146,7 +146,7 @@ class ChatSetupController {
         ws.cercaGruppo(nome, password) { esito ->
             if (esito is RRWebService) {
                 popup("successo", "Accesso al gruppo in corso...")
-                val resourceRecord = RRConfig(esito, username = username, indirizzoIP = esito.ipChat, porta = esito.portaChat, ttl = ttl, loopbackOff = loopbackOff)
+                val resourceRecord = RRConfig(esito, username = username, sGateKey = password, indirizzoIP = esito.ipChat, porta = esito.portaChat, ttl = ttl, loopbackOff = loopbackOff)
                 Thread.sleep(1500)
                 Platform.runLater{
                     application.avviaChat(resourceRecord, esito.nomeChat)

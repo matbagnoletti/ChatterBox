@@ -498,10 +498,7 @@ class ChatterBoxController {
         Platform.runLater {
             impUsername.text = "Username (tu): $username"
             impNomeGruppo.text = "Nome gruppo: $nomeGruppo"
-            
-            // mostro solo le prime 6 cifre della password
-            val pswRistretta = "${passwordGruppo?.substring(0, 10)}..."
-            impPasswordGruppo.text = "Password gruppo: $pswRistretta"
+            impPasswordGruppo.text = "Password gruppo: $passwordGruppo"
         }
     }
 
@@ -520,6 +517,10 @@ class ChatterBoxController {
             if(tipo == "successo") {
                 avviso.styleClass.addAll(
                     Styles.SUCCESS, Styles.ELEVATED_1
+                )
+            } else if(tipo == "avviso") {
+                avviso.styleClass.addAll(
+                    Styles.ACCENT, Styles.ELEVATED_1
                 )
             } else {
                 avviso.styleClass.addAll(

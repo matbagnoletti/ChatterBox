@@ -28,7 +28,12 @@ public class ProjectOutput {
         switch (tipologia) {
             case OutputType.STDOUT -> System.out.println("\033[1;32m> \033[0m" + output);
 
-            case OutputType.STDERR -> System.err.println("\033[1;31m#\033[0m\033[31m " + output + "\033[0m");
+            case OutputType.STDERR -> {
+                if(controller != null && controller.application.isUIattiva()) {
+                    controller.popup("errore", output);
+                } else System.err.println("\033[1;31m#\033[0m\033[31m " + output + "\033[0m");
+                
+            }
 
             case OutputType.LOG -> System.out.println("\033[1;37m# " + output + "\033[0m");
             

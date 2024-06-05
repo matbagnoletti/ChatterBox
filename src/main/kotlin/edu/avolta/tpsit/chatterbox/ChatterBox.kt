@@ -115,6 +115,8 @@ class ChatterBox : Application() {
             isUIattiva = false
             multicastPeer.chiudi()
         }
+        
+        ctrlChat.popup("avviso", "A partire versione v2.1.0 ogni conversazione è protetta da crittografia End-to-End (AES).")
     }
 
     /**
@@ -169,7 +171,7 @@ class ChatterBox : Application() {
         multicastPeer = MulticastPeer(resourceRecord.username, true, groupChat, ctrlChat, resourceRecord)
         multicastPeer.configura()
         multicastPeer.avvia()
-        ctrlChat.aggiornaInfoGruppo(resourceRecord.username, resourceRecord.ws.nomeChat, resourceRecord.ws.pswChat)
+        ctrlChat.aggiornaInfoGruppo(resourceRecord.username, resourceRecord.ws.nomeChat, resourceRecord.sGateKey)
     }
 }
 

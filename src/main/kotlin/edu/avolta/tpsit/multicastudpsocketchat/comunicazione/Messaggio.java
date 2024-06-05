@@ -297,11 +297,11 @@ public class Messaggio implements Serializable {
      */
     public static byte[] configMsg(Messaggio messaggio) throws MsgException {
         if(messaggio == null) throw new MsgException("Impossibile serializzare un messaggio nullo");
-        try {
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            ObjectOutputStream os = new ObjectOutputStream(outputStream);
-            os.writeObject(messaggio);
-            return outputStream.toByteArray();
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+             ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)) {
+            objectOutputStream.writeObject(messaggio);
+            objectOutputStream.flush();
+            return byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
             throw new MsgException("Errore nella serializzazione del messaggio");
         }
@@ -314,15 +314,9 @@ public class Messaggio implements Serializable {
      * @throws MsgException se si verifica un problema durante la serializzazione
      */
     public static Messaggio configMsg(byte[] arrayInput) throws MsgException {
-        try {
-            ByteArrayInputStream inputStream = new ByteArrayInputStream(arrayInput);
-            ObjectInputStream is = new ObjectInputStream(inputStream);
-            Object test = is.readObject();
-            if (test instanceof Messaggio){
-                return (Messaggio) test;
-            } else {
-                throw new MsgException("Il messaggio ricevuto non è valido");
-            }
+        try (ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(arrayInput);
+             ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream)) {
+            return (Messaggio) objectInputStream.readObject();
         } catch (ClassNotFoundException e) {
             throw new MsgException("Errore nella deserializzazione del messaggio: impossibile ricostruire il messaggio");
         } catch (IOException e) {

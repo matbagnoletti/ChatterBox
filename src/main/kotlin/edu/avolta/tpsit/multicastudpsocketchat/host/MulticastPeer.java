@@ -2,7 +2,6 @@ package edu.avolta.tpsit.multicastudpsocketchat.host;
 
 import edu.avolta.tpsit.chatterbox.ChatterBoxController;
 import edu.avolta.tpsit.chatterbox.RRConfig;
-import edu.avolta.tpsit.chatterbox.WSHandler;
 import edu.avolta.tpsit.multicastudpsocketchat.comunicazione.MsgType;
 import edu.avolta.tpsit.multicastudpsocketchat.comunicazione.Protocollo;
 import edu.avolta.tpsit.multicastudpsocketchat.eccezioni.ProtocolException;
@@ -16,10 +15,11 @@ import edu.avolta.tpsit.multicastudpsocketchat.eccezioni.CommunicationException;
 import edu.avolta.tpsit.multicastudpsocketchat.eccezioni.MsgException;
 import edu.avolta.tpsit.multicastudpsocketchat.eccezioni.NoSuchUserException;
 import edu.avolta.tpsit.multicastudpsocketchat.utenze.*;
-import javafx.util.Callback;
+import edu.avolta.tpsit.security.SecurityGate;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -61,6 +61,8 @@ public class MulticastPeer {
      * Il {@link GroupChat} utilizzato
      */
     private final GroupChat gruppoUDP;
+    
+    private final SecurityGate securityGate;
 
     /**
      * Crea un oggetto <code>multicastPeer</code> e configura le strutture di gestione e funzionamento associate
@@ -98,6 +100,8 @@ public class MulticastPeer {
         setOnline(false);
         ChatLogger.abilita(abilitaLog);
         this.controller = controller;
+        this.securityGate = new SecurityGate();
+        this.securityGate.generaChiave(resourceRecord.getSGateKey());
     }
 
     /**
@@ -197,7 +201,7 @@ public class MulticastPeer {
                         byte[] buffer = new byte[1024];
                         DatagramPacket packet = new DatagramPacket(buffer, buffer.length);
                         tipoSocket.receive(packet);
-                        Messaggio msgRicevuto = Messaggio.configMsg(buffer);
+                        Messaggio msgRicevuto = securityGate.decifraMessaggio(packet.getData(), packet.getLength());
 
                         cronologia.nuovoMessaggio(msgRicevuto);
                         rubrica.aggiungiUtente(msgRicevuto.getUtente(), packet.getAddress(), msgRicevuto.getPortaMittente(), controller);
@@ -358,7 +362,7 @@ public class MulticastPeer {
         ChatLogger.log("Invio messaggio unicast per " + utente.getIDutente() + " con msgID " + messaggioUnicast + " in corso...", ChatLoggerType.OPTIONAL);
         cronologia.storicizzaMessaggio(messaggio);
         
-        byte[] out = Messaggio.configMsg(messaggio);
+        byte[] out = securityGate.cifraMessaggio(messaggio);
         DatagramPacket packet = new DatagramPacket(out, out.length, infoDestinatario.inetAddress(), infoDestinatario.porta());
         invia(packet);
         controller.nuovoElemChat(messaggioUnicast, MsgType.INVIO, id, null, messaggio.getTimestamp());
@@ -380,7 +384,7 @@ public class MulticastPeer {
         ChatLogger.log("Invio messaggio ACK per " + utente.getIDutente() + " con msgID " + msgIDxACK + " in corso...", ChatLoggerType.OPTIONAL);
         cronologia.storicizzaMessaggio(messaggio);
         
-        byte[] out = Messaggio.configMsg(messaggio);
+        byte[] out = securityGate.cifraMessaggio(messaggio);
         DatagramPacket packet = new DatagramPacket(out, out.length, infoDestinatario.inetAddress(), infoDestinatario.porta());
         invia(packet);
     }
@@ -423,7 +427,7 @@ public class MulticastPeer {
             messaggio = new Messaggio(id, utente, unicastSocket.getLocalPort(), rubrica.partecipantiGruppo(), messaggioMulticast, true, Protocollo.UDP.multicast);
         }
         cronologia.storicizzaMessaggio(messaggio);
-        byte[] out = Messaggio.configMsg(messaggio);
+        byte[] out = securityGate.cifraMessaggio(messaggio);
         gruppoUDP.multicast(out);
         controller.aggiornaDashboard(InetAddress.getLocalHost().getHostAddress(), String.valueOf(this.unicastSocket.getLocalPort()), this.gruppoUDP.getIndirizzoMulticast().toString(), String.valueOf(this.gruppoUDP.getPortaGruppo()), String.valueOf(this.cronologia.getMessaggiInviati()), String.valueOf(this.cronologia.getMessaggiRicevuti()), this.cronologia.getSimpleStat());
     }

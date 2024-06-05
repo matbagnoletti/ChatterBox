@@ -17,7 +17,6 @@ L'interfaccia grafica utilizzata è stata realizzata con JavaFX, mentre la gesti
 - [JavaFX](https://openjfx.io/) (v22.0.1)
 - [Maven](https://maven.apache.org/download.cgi)
 - [Git](https://git-scm.com/downloads)
-- [Git LFS](https://git-lfs.com/)
 
 È possibile visualizzare le versioni già presenti sul proprio dispositivo mediante i seguenti comandi:
 ```bash
@@ -32,30 +31,18 @@ Per poter utilizzare l'applicazione ChatterBox procedi a:
    git clone https://www.github.com/matbagnoletti/ChatterBox.git
    ```
    In alternativa, effettua il download del file compresso del progetto ed estrailo in una cartella locale del tuo computer.
-2. Aprire il terminale nella cartella del progetto
-3. Dopo aver scaricato [Git LFS](https://git-lfs.com/) procedi con la sua configurazione nella cartella locale. Git LFS gestisce i file .jar eseguibili dell'applicazione a causa delle sue elevate dimensioni (superiore a 50MB).
-   ```bash
-   # Configurazione
-   git lfs install
-   
-   # Download dei file .jar
-   git lfs pull
-   ```
-4. Terminate le operazioni di Git LFS, esegui i comandi per l'avvio dell'applicazione, assicurandoti di sostituire <code>${PATH-TO-FX}</code> con il percorso completo della cartella <code>lib</code> di JavaFX: 
-   ```bash
-   mvn clean
-   mvn package
-   mvn install
-   java --module-path ${PATH-TO-FX} --add-modules javafx.controls,javafx.fxml,javafx.web,javafx.graphics -cp .\target\ChatterBox-2.0.0-shaded.jar edu.avolta.tpsit.chatterbox.ChatterBox
-   ```
-
-In alternativa è possibile eseguire il progetto direttamente da un IDE come [IntelliJ IDEA](https://www.jetbrains.com/idea/).
+2. Apri il progetto con un IDE come [IntelliJ IDEA](https://www.jetbrains.com/idea/). Nella sezione `Maven` del progetto, clicca su `Plugins` e poi:
+   - `clean:clean` per ripulire il progetto;
+   - `kotlin:compile` per compilare il codice kotlin;
+   - `compiler:compile` per compilare il progetto;
+   - `javafx:run` per eseguire il progetto.
 
 ## Struttura e funzionamento
-Il progetto si compone da 2 packages principali:
+Il progetto si compone da 3 packages principali:
 
 - Package [`chatterbox`](src/main/kotlin/edu/avolta/tpsit/chatterbox): contiene le classi di gestione dell'interfaccia grafica JavaFX e la classe principale `ChatterBox`.
 - Package [`multicastudpsocketchat`](src/main/kotlin/edu/avolta/tpsit/multicastudpsocketchat): contiene le classi di gestione della chat, il cui progetto di riferimento è disponibile [qui](https://www.github.com/matbagnoletti/MulticastUDPSocketChat).
+- Package [`security`](src/main/kotlin/edu/avolta/tpsit/security): contiene la classe di gestione della sicurezza della comunicazione tramite crittografia End-to-End (AES).
 
 ### Utilizzo
 1. All'avvio dell'applicazione, una schermata di setup permetterà all'utente la configurazione del proprio username e le impostazioni di connessione al gruppo chat.
