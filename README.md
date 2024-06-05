@@ -26,11 +26,11 @@ mvn -v
 
 ## Installazione e utilizzo
 Per poter utilizzare l'applicazione ChatterBox procedi a:
-1. Effettua il clone della repository con il comando[^1]:
+1. Effettua il clone della repository con il comando:
    ```bash
    git clone https://www.github.com/matbagnoletti/ChatterBox.git
    ```
-   <u>In alternativa</u>, effettua il download del file compresso del progetto ed estrailo in una cartella locale del tuo computer.   
+   In alternativa</u>, effettua il download del file compresso del progetto ed estrailo in una cartella locale del tuo computer.   
 
 2. Apri il progetto con un IDE come [IntelliJ IDEA](https://www.jetbrains.com/idea/). Nella sezione `Maven` del progetto, clicca su `Plugins` e poi:
    - `clean:clean` per ripulire il progetto;
@@ -38,7 +38,7 @@ Per poter utilizzare l'applicazione ChatterBox procedi a:
    - `compiler:compile` per compilare il progetto;
    - `javafx:run` per eseguire il progetto.
 
-   <u>In alternativa</u>, da IDE IntelliJ IDEA, è possibile eseguire la configurazione `ChatterBox` [storicizzata nel progetto](.idea/runConfigurations/ChatterBox.xml).
+   In alternativa, da IDE IntelliJ IDEA, è possibile eseguire la configurazione `ChatterBox` [storicizzata nel progetto](.idea/runConfigurations/ChatterBox.xml).
 
 ## Struttura e funzionamento
 Il progetto si compone da 3 packages principali:
