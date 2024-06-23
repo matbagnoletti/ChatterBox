@@ -87,7 +87,7 @@ class WSHandler {
      */
     @Synchronized
     fun creaGruppo(nome: String, psw: String, callback: (Any) -> Unit) {
-        val group = mapOf("nomeChat" to nome, "pswChat" to psw, "vChat" to "2.0.0")
+        val group = mapOf("nomeChat" to nome, "pswChat" to psw, "vChat" to "2.1.1")
         val json = gson.toJson(group)
         val requestBody = json.toRequestBody("application/json; charset=utf-8".toMediaTypeOrNull())
         val request = Request.Builder()

@@ -100,9 +100,11 @@ class ChatterBoxController {
     
     /* impostazioni */
     @FXML
-    private lateinit var toggleTema: Toggle
+    lateinit var toggleTema: Toggle
     @FXML
     private lateinit var toggleLog: Toggle
+    @FXML
+    lateinit var sceltaStileUI: ChoiceBox<String>
     
     /* log */
     @FXML
@@ -116,6 +118,7 @@ class ChatterBoxController {
      * Riferimento all'applicazione principale
      */
     lateinit var application : ChatterBox
+    lateinit var config: CBConfig
     private val storicoChat : MutableList<String> = mutableListOf()
     private var isChatAttiva = true
 
@@ -150,6 +153,10 @@ class ChatterBoxController {
             if (event.code == KeyCode.ENTER) {
                 nuovoMsgDaInput()
             }
+        }
+        
+        sceltaStileUI.setOnAction {
+            application.setStileUI(sceltaStileUI.value, toggleTema.isSelected)
         }
     }
 
@@ -215,9 +222,9 @@ class ChatterBoxController {
     @FXML
     fun cambiaTema() {
         if(toggleTema.isSelected){
-            application.cambiaTema("scuro")
+            application.setStileUI(sceltaStileUI.value, true)
         } else {
-            application.cambiaTema("chiaro")
+            application.setStileUI(sceltaStileUI.value, false)
         }
     }
 
@@ -247,7 +254,7 @@ class ChatterBoxController {
 
                 // 1) riga di intestazione con data completa e tutti i dati della chat (indirizzo IP, porta, ecc)
                 selectedFile.writeText("ChatterBox - Storico della chat\n\n")
-                selectedFile.writeText("Gruppo: ${impNomeGruppo.text}\n")
+                selectedFile.writeText("${impNomeGruppo.text}\n")
                 selectedFile.appendText("Data: ${LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))}\n")
                 selectedFile.appendText("${impIndirizzoIPLocale.text}\n")
                 selectedFile.appendText("${impPortaLocale.text}\n")
@@ -307,49 +314,80 @@ class ChatterBoxController {
         Platform.runLater {
             // Creazione HBox per il messaggio con padding e spacing
             val hBox = HBox().apply {
-                padding = Insets(8.0)
-                spacing = 8.0
+                padding = Insets(4.0)
+                spacing = 2.0
+            }
+            
+            // struttura con padding background e bordi per messaggio
+            val hBoxInterno = HBox()
+
+            VBox.setMargin(hBox, Insets(6.0))
+            
+            // mittente e sotto il messaggio
+            val vBoxMittenteBoxMsg = VBox().apply {
+                alignment = Pos.CENTER_LEFT
+                spacing = .5
             }
 
             // Creazione VBox per la struttura del messaggio
             val vBox = VBox().apply {
                 alignment = Pos.CENTER_RIGHT
-                spacing = 1.5
+                spacing = 1.0
             }
 
             // HBox per il mittente e il messaggio
-            val hBoxMittenteMsg = HBox().apply { spacing = 1.5 }
+            val hBoxMsg = HBox()
 
             // Aggiunta del mittente se presente
-            mittente?.let {
-                val mit = Label("$it: ").apply { styleClass.addAll(Styles.TEXT, Styles.TEXT_BOLD) }
-                hBoxMittenteMsg.children.add(mit)
+            if (mittenteStorico != "TU" && !storicoChat[storicoChat.size - 2].contains("$mittente:")) {
+                mittente.let {
+                    val mit = Label(it).apply {
+                        styleClass.addAll(Styles.TEXT, Styles.TEXT_BOLD, Styles.ACCENT)
+                        padding = Insets(0.0, 0.0, 0.0, 12.0)
+                    }
+                    vBoxMittenteBoxMsg.children.add(mit)
+                }
+            }
+            
+            class TestoMsg(msg: String, stile: String) : Text() {
+                init {
+                    text = msg
+                    styleClass.addAll(Styles.TEXT, stile)
+                    style += "-fx-text-fill: rgb(27,27,27); $stile"
+                }
             }
 
             // Creazione del messaggio
-            val msg = Label(messaggio).apply { isWrapText = true }
+            val msg = TestoMsg(messaggio, "-fx-font-weight: 800;")
 
             // Impostazione degli allineamenti in base al tipo di messaggio
             when (tipo) {
                 MsgType.INVIO -> {
-                    hBoxMittenteMsg.alignment = Pos.CENTER_RIGHT
+                    hBoxMsg.alignment = Pos.CENTER_RIGHT
                     hBox.alignment = Pos.CENTER_RIGHT
+                    hBoxInterno.alignment = Pos.CENTER_RIGHT
+                    hBoxInterno.padding = Insets(7.0, 18.0, 7.0, 15.0)
+                    hBoxInterno.style = "-fx-background-color: -color-base-2; -fx-background-radius: 10px 18px 0px 10px;"
                     inputMsg.text = ""
                 }
                 MsgType.RICEZIONE -> {
-                    hBoxMittenteMsg.alignment = Pos.CENTER_LEFT
+                    hBoxMsg.alignment = Pos.CENTER_LEFT
                     hBox.alignment = Pos.CENTER_LEFT
+                    hBoxInterno.alignment = Pos.CENTER_LEFT
+                    hBoxInterno.padding = Insets(7.0, 15.0, 7.0, 18.0)
+                    hBoxInterno.style = "-fx-background-color: -color-base-2; -fx-background-radius: 18px 10px 10px 0px;"
                 }
                 MsgType.GESTIONE -> {
                     msg.styleClass.add(Styles.TEXT_MUTED)
-                    hBoxMittenteMsg.alignment = Pos.CENTER
+                    hBoxMsg.alignment = Pos.CENTER
+                    hBoxInterno.alignment = Pos.CENTER
                     hBox.alignment = Pos.CENTER
                 }
             }
 
             // Aggiunta del messaggio all'HBox
-            hBoxMittenteMsg.children.add(msg)
-            vBox.children.add(hBoxMittenteMsg)
+            hBoxMsg.children.add(msg)
+            vBox.children.add(hBoxMsg)
 
             // Aggiunta del timestamp e dell'icona per messaggi di invio e ricezione
             if (tipo != MsgType.GESTIONE) {
@@ -365,6 +403,7 @@ class ChatterBoxController {
                 // Aggiunta del timestamp
                 val tempo = Label(orarioStorico).apply {
                     styleClass.addAll(Styles.TEXT, Styles.TEXT_SMALL)
+                    style = "-fx-text-fill: rgb(27,27,27);"
                 }
                 hBoxTempoVisto.children.add(tempo)
 
@@ -382,7 +421,9 @@ class ChatterBoxController {
             }
 
             // Aggiunta della struttura del messaggio all'HBox
-            hBox.children.add(vBox)
+            hBoxInterno.children.add(vBox)
+            vBoxMittenteBoxMsg.children.add(hBoxInterno)
+            hBox.children.add(vBoxMittenteBoxMsg)
             schermoMessaggi.items.add(hBox)
 
             // Scorrimento automatico alla fine dei messaggi
@@ -400,8 +441,10 @@ class ChatterBoxController {
         Platform.runLater {
             schermoMessaggi.layout()
             schermoMessaggi.items.forEach { hBox ->
-                val vBox = hBox.children[0] as VBox
                 try {
+                    val vBoxMittenteBoxMsg = hBox.children[0] as VBox
+                    val hBoxInterno = vBoxMittenteBoxMsg.children[0] as HBox
+                    val vBox = hBoxInterno.children[0] as VBox
                     val hBoxTempoVisto = vBox.children[1] as HBox
                     val icona = hBoxTempoVisto.children[1] as FontIcon
                     if(icona.id == "msg-$timestamp-$msgID"){
@@ -514,18 +557,22 @@ class ChatterBoxController {
                 msg,
                 FontIcon(BootstrapIcons.EXCLAMATION_CIRCLE)
             )
-            if(tipo == "successo") {
-                avviso.styleClass.addAll(
-                    Styles.SUCCESS, Styles.ELEVATED_1
-                )
-            } else if(tipo == "avviso") {
-                avviso.styleClass.addAll(
-                    Styles.ACCENT, Styles.ELEVATED_1
-                )
-            } else {
-                avviso.styleClass.addAll(
-                    Styles.DANGER, Styles.ELEVATED_1
-                )
+            when (tipo) {
+                "successo" -> {
+                    avviso.styleClass.addAll(
+                        Styles.SUCCESS, Styles.ELEVATED_1
+                    )
+                }
+                "avviso" -> {
+                    avviso.styleClass.addAll(
+                        Styles.ACCENT, Styles.ELEVATED_1
+                    )
+                }
+                else -> {
+                    avviso.styleClass.addAll(
+                        Styles.DANGER, Styles.ELEVATED_1
+                    )
+                }
             }
             avviso.onClose = EventHandler {
                 val out = Animations.slideOutUp(avviso, Duration.seconds(0.5))

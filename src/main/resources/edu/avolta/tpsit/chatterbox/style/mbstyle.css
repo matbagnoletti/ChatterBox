@@ -5,7 +5,7 @@
 
 .root {
     -fx-font-family: 'Inter', 'Arial', 'Helvetica', sans-serif;
-    -fx-font-weight: 500 !important;
+    -fx-font-weight: 500;
     -fx-font-size: 14px;
     -fx-spacing: 11.0 !important;
 }

@@ -11,7 +11,7 @@
 
 <AnchorPane fx:id="schermo" prefHeight="445.0" prefWidth="650.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.avolta.tpsit.chatterbox.ChatterBoxController">
    <children>
-      <TabPane prefHeight="445.0" prefWidth="650.0" tabClosingPolicy="UNAVAILABLE">
+      <TabPane prefHeight="445.0" prefWidth="650.0" styleClass="Styles.TABS_CLASSIC" tabClosingPolicy="UNAVAILABLE">
         <tabs>
           <Tab text="Chat">
             <content>
@@ -78,7 +78,7 @@
                            </font>
                         </Label>
                         <Separator layoutX="37.0" layoutY="190.0" prefHeight="0.0" prefWidth="577.0" />
-                        <Text layoutX="38.0" layoutY="238.0" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dalla versone v2.0.0 ChatterBox non prevede più la gestione manuale dei gruppi mediante indirizzo IPv4 multicast e numero di porta. L'intera gestione è affidata al Web Service con API RESTful di ChatterBox, il quale opera creando e configurando appositamente le chat. Dall'interfaccia grafica è possibile richiedere la creazione di un gruppo con nome identificativo e password (storicizzata in modo cifrato nel DB), fornendo semplici e pratiche credenziali di autenticazione per gli altri membri." wrappingWidth="575.0">
+                        <Text layoutX="38.0" layoutY="238.0" lineSpacing="5.0" strokeType="OUTSIDE" strokeWidth="0.0" text="A partire dalla versione v2.0.0, ChatterBox non supporta più la gestione manuale dei gruppi tramite indirizzo IPv4 multicast e numero di porta. La gestione dei gruppi è ora completamente affidata al Web Service di ChatterBox, che utilizza API RESTful per creare e configurare le chat. Dall'interfaccia grafica, gli utenti possono richiedere la creazione di un gruppo fornendo un nome identificativo e una password. Questa password viene memorizzata in modo cifrato nel database. Gli altri membri possono accedere al gruppo utilizzando semplici e pratiche credenziali di autenticazione." wrappingWidth="575.0">
                            <font>
                               <Font name="Inter Regular" size="13.0" />
                            </font>
@@ -207,16 +207,19 @@
                            </children>
                         </HBox>
                         <Separator layoutX="25.0" layoutY="346.0" prefWidth="200.0" AnchorPane.bottomAnchor="67.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="346.0" />
-                        <Hyperlink alignment="CENTER_RIGHT" cache="true" contentDisplay="CENTER" layoutX="25.0" layoutY="357.0" minHeight="33.0" minWidth="120.0" mnemonicParsing="true" onAction="#linkGitHub" prefHeight="33.0" prefWidth="120.0" text="Build v2.1.0" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="357.0" />
-                        <Text layoutX="25.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lingua:" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="220.0">
+                        <Hyperlink alignment="CENTER_RIGHT" cache="true" contentDisplay="CENTER" layoutX="25.0" layoutY="357.0" minHeight="33.0" minWidth="120.0" mnemonicParsing="true" onAction="#linkGitHub" prefHeight="33.0" prefWidth="120.0" text="Build v2.1.1" textAlignment="CENTER" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="357.0" />
+                        <Text layoutX="25.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stile UI:" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" AnchorPane.topAnchor="220.0">
                            <font>
                               <Font name="Inter Regular" size="14.0" />
                            </font>
                         </Text>
-                        <ChoiceBox fx:id="sceltaLingua" layoutX="80.0" layoutY="78.0" prefHeight="25.0" prefWidth="160.0" value="italiano (IT)" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="370.0" AnchorPane.topAnchor="215.0">
+                        <ChoiceBox fx:id="sceltaStileUI" layoutX="80.0" layoutY="78.0" prefHeight="25.0" prefWidth="160.0" value="Default" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="370.0" AnchorPane.topAnchor="215.0">
                            <items>
                               <FXCollections fx:factory="observableArrayList">
-                                 <String fx:value="italiano (IT)" />
+                                 <String fx:value="Default" />
+                                 <String fx:value="Nord" />
+                                 <String fx:value="Primer" />
+                                 <String fx:value="Dracula" />
                               </FXCollections>
                            </items>
                         </ChoiceBox>

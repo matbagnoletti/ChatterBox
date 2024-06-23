@@ -1,5 +1,10 @@
 package edu.avolta.tpsit.chatterbox
 
+import atlantafx.base.theme.CupertinoDark
+import atlantafx.base.theme.CupertinoLight
+import atlantafx.base.theme.Dracula
+import atlantafx.base.theme.NordDark
+import atlantafx.base.theme.NordLight
 import atlantafx.base.theme.PrimerDark
 import atlantafx.base.theme.PrimerLight
 import edu.avolta.tpsit.multicastudpsocketchat.gestione.OutputType
@@ -61,10 +66,15 @@ class ChatterBox : Application() {
      * Controller della chat
      */
     private lateinit var ctrlChat : ChatterBoxController
+
+    /**
+     * Configurazione dell'applicazione
+     */
+    private lateinit var config: CBConfig
     
     override fun start(stage: Stage) {
         /* CSS AtlantaFX*/
-        setUserAgentStylesheet(PrimerDark().userAgentStylesheet)
+        setUserAgentStylesheet(CupertinoDark().userAgentStylesheet)
         val scene = creaScena("fxml/chatsetup-view.fxml", 500.0, 350.0)
         fxmlLoader.getController<ChatSetupController>().application = this
         stage.title = "ChatterBox Setup"
@@ -75,7 +85,7 @@ class ChatterBox : Application() {
         stage.show()
         isUIattiva = true
         stageCorrente = stage
-        ctrlSetup = fxmlLoader.getController<ChatSetupController>()
+        ctrlSetup = fxmlLoader.getController()
         
         stage.setOnCloseRequest {
             ctrlSetup.disconnettiWS()
@@ -101,7 +111,7 @@ class ChatterBox : Application() {
         stage.show()
         isUIattiva = true
         stageCorrente = stage
-        ctrlChat = fxmlLoader.getController<ChatterBoxController>()
+        ctrlChat = fxmlLoader.getController()
         ctrlChat.application = this
         ProjectOutput.controller = ctrlChat
         try {
@@ -116,7 +126,14 @@ class ChatterBox : Application() {
             multicastPeer.chiudi()
         }
         
+        config = CBConfig(resourceRecord.username)
+        ctrlChat.config = config
+        if (config.getConfig("tema").isNotBlank() && config.getConfig("darkmode").isNotBlank()) {
+            setStileUI(config.getConfig("tema"), config.getConfig("darkmode").toBoolean()) 
+        }
+
         ctrlChat.popup("avviso", "A partire versione v2.1.0 ogni conversazione è protetta da crittografia End-to-End (AES).")
+        ctrlChat.popup("avviso", "A partire versione v2.1.1 le preferenze utente sono salvate in un file di configurazione in modo che possano essere recuperate al prossimo avvio.")
     }
 
     /**
@@ -125,7 +142,7 @@ class ChatterBox : Application() {
     private fun creaScena(fxmlPath: String, width: Double, height: Double, cssPath: String? = "style/mbstyle.css"): Scene {
         val fxmlLoader = FXMLLoader(ChatterBox::class.java.getResource(fxmlPath))
         val scene = Scene(fxmlLoader.load(), width, height)
-        val cssResource = javaClass.getResource(cssPath)
+        val cssResource = cssPath?.let { javaClass.getResource(it) }
         if (cssResource != null) {
             scene.stylesheets.add(cssResource.toExternalForm())
         }
@@ -134,17 +151,26 @@ class ChatterBox : Application() {
     }
 
     /**
-     * Cambia il tema dell'applicazione
+     * Cambia il tema dell'applicazione in base al tema e al dark mode
      */
-    fun cambiaTema(tema : String){
-        when(tema) {
-            "scuro" -> {
-                setUserAgentStylesheet(PrimerDark().userAgentStylesheet)
-            }
-            "chiaro" -> {
-                setUserAgentStylesheet(PrimerLight().userAgentStylesheet)
-            }
+    fun setStileUI(tema: String, darkMode: Boolean) {
+        val stile = when {
+            tema == "Default" && darkMode -> CupertinoDark().userAgentStylesheet
+            tema == "Default" -> CupertinoLight().userAgentStylesheet
+            tema == "Nord" && darkMode -> NordDark().userAgentStylesheet
+            tema == "Nord" -> NordLight().userAgentStylesheet
+            tema == "Primer" && darkMode -> PrimerDark().userAgentStylesheet
+            tema == "Primer" -> PrimerLight().userAgentStylesheet
+            tema == "Dracula" -> Dracula().userAgentStylesheet
+            else -> null
         }
+        
+        ctrlChat.toggleTema.isSelected = darkMode
+        ctrlChat.sceltaStileUI.value = tema
+
+        stile?.let { setUserAgentStylesheet(it) }
+        config.setConfig("tema", tema, "")
+        config.setConfig("darkmode", darkMode.toString(), "")
     }
 
     /**
